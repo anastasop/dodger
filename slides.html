@@ -1,0 +1,61 @@
+{{define "slides"}}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>dodger - a visual twitter reader</title>
+    <meta http-equiv="refresh" content="{{.RefreshSeconds}}" >
+    <meta name="apple-mobile-web-app-capable" content="yes" >
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="css/reveal.min.css">
+    <link rel="stylesheet" href="css/theme/sky.css" id="theme">
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        {{range .Slides}}
+        <section>
+          {{if .Base64PNGencoding}}
+          <section data_go = "{{.Expanded_url}}">
+            <img style="width: 100%; height: 100%;" src="data:image/png;base64,{{.Base64PNGencoding}}"/>
+          </section>
+          {{end}} 
+          <section data_go = "{{.Expanded_url}}">
+            <strong>@{{.UserScreenName}}</strong><br/>
+            {{.Text}}
+          </section>
+        </section>
+        {{end}}
+      </div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.min.js"></script>
+
+    <script>
+      Reveal.initialize({
+        controls: true,
+        center: true,
+
+        theme: Reveal.getQueryHash().theme,
+        transition: 'linear',
+        keyboard: {
+          71: function() {
+            var u = Reveal.getCurrentSlide().getAttribute("data_go");
+            if (u) {
+              window.open(u, "_blank");
+            }
+          },
+          73: function() {} // TODO save url in instapaper
+        }
+      });
+    </script>
+  </body>
+</html>
+{{end}}
